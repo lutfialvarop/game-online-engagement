@@ -1,0 +1,38 @@
+name: Deploy to VPS
+
+on:
+    push:
+        branches:
+            - main # Trigger saat push ke branch main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Deploy to VPS via SSH
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.VPS_HOST }}
+                  username: ${{ secrets.VPS_USER }}
+                  key: ${{ secrets.VPS_SSH_KEY }}
+                  port: 22
+                  script: |
+                      # 1. Masuk ke folder project (buat folder ini dulu di VPS)
+                      mkdir -p ~/apps/gaming-predictor
+                      cd ~/apps/gaming-predictor
+
+                      # 2. Pull codingan terbaru (Ganti URL dengan repo kamu)
+                      # Jika private repo, kamu perlu setup SSH key / Token di VPS
+                      # Untuk simplisitas, ini asumsi repo public atau sudah auth
+                      git pull origin main || git clone https://github.com/lutfialvarop/game-online-engagement.git .
+
+                      # 3. Rebuild dan Restart Docker Container
+                      docker compose down
+                      docker compose up -d --build
+
+                      # 4. Hapus image bekas (cleanup)
+                      docker image prune -f

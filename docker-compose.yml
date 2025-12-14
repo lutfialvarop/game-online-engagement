@@ -1,0 +1,8 @@
+version: "3"
+services:
+    gaming-app:
+        build: .
+        container_name: gaming_engagement_app
+        ports:
+            - "8501:8501"
+        restart: always
