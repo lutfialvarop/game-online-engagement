@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
     push:
         branches:
-            - main # Trigger saat push ke branch main
+            - main
 
 jobs:
     deploy:
@@ -23,13 +23,12 @@ jobs:
               with:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
-                  # KITA GANTI 'key' MENJADI 'key_path'
                   key_path: private_key.pem
                   port: 22
                   script: |
                       echo "🎉 Login Berhasil!"
-                      mkdir -p ~/apps/gaming-predictor
-                      cd ~/apps/gaming-predictor
+                      mkdir -p /var/www/playmetric-app
+                      cd /var/www/playmetric-app
                       # Update code
                       git pull origin main || git clone https://github.com/lutfialvarop/game-online-engagement.git .
                       # Restart Docker
