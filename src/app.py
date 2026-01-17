@@ -4,9 +4,9 @@ import joblib
 import numpy as np
 
 # Load Model, Scaler, dan Kolom Fitur
-model = joblib.load('xgboost_best_model.pkl')
-scaler = joblib.load('scaler.pkl')
-feature_columns = joblib.load('feature_columns.pkl')
+model = joblib.load('/models/xgboost_best_model.pkl')
+scaler = joblib.load('/models/scaler.pkl')
+feature_columns = joblib.load('/models/feature_columns.pkl')
 
 st.title("🎮 Online Gaming Engagement Predictor")
 
